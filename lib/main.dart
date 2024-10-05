@@ -14,17 +14,19 @@ import 'package:nutri_track/pages/needs_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? token = prefs.getString('token');
-  runApp(MyApp(token : token));
+  String? token = prefs.getString('token'); // Token from SharedPreferences is nullable
+  runApp(MyApp(token: token));
 }
 
 class MyApp extends StatelessWidget {
-  final token;
-  const MyApp({@required this.token, Key? key}) :  super(key:key);
+  final token;  // Make token nullable
+  const MyApp({this.token, Key? key}) : super(key: key); // Accept nullable token
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // Check if token is not null and not expired
+    String? validatedToken = (token != null && !JwtDecoder.isExpired(token)) ? token : null;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -33,20 +35,20 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        '/signup' : (context)=> SignUp(),
-        '/signin' : (context)=>SignIn(),
-        '/dashboard' : (context)=>DashBoard(),
-        '/bmi': (context) => BMIPage(),                       // Route for BMI Page
-        '/zscore': (context) => ZScorePage(),                 // Route for Z-Score Page
-        '/update': (context) => UpdatePage(),                 // Route for Update Page
-        '/dietchart': (context) => DietChartPage(),           // Route for Diet Chart Page
-        '/advice': (context) => AdvicePage(),                 // Route for Advice Page
+        '/signup': (context) => SignUp(),
+        '/signin': (context) => SignIn(),
+        '/dashboard': (context) => DashBoard(token: validatedToken), // Pass nullable token
+        '/bmi': (context) => BMIPage(),
+        '/zscore': (context) => ZScorePage(),
+        '/update': (context) => UpdatePage(),
+        '/dietchart': (context) => DietChartPage(),
+        '/advice': (context) => AdvicePage(),
         '/needs': (context) => NeedsPage(),
       },
-      // home: (token != null && JwtDecoder.isExpired(token) == false) ? DashBoard(token: token) : SignIn(),
-      home:DashBoard(),
+      // home: validatedToken != null
+      //     ? DashBoard(token: validatedToken)  // Safely pass the token
+      //     : SignIn(),
+      home : DashBoard(),
     );
   }
 }
-
-
