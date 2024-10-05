@@ -1,16 +1,38 @@
 # nutri_track
 
-A new Flutter project.
+A Flutter application for tracking and monitoring diets, Body Mass Index (BMI), and Z-scores for children and teens. This application aims to provide an intuitive and comprehensive platform for parents and caregivers to manage nutritional information and health metrics effectively.
+
+## Features
+
+- **Diet Tracking**: Log daily food intake, monitor nutritional values, and set dietary goals.
+- **BMI Calculator**: Calculate and track Body Mass Index for children and teens based on age, height, and weight.
+- **Z-score Calculation**: Assess growth patterns and nutritional status using Z-scores.
+- **User Authentication**: Secure user accounts for personalized tracking and data management.
+- **Data Visualization**: Interactive graphs and charts to visualize growth and dietary trends over time.
+
+## Tech Stack
+
+- **Frontend**: Flutter
+- **Backend**: Node.js
+- **Database**: MongoDB
+- **Authentication**: JWT (JSON Web Tokens)
+- **State Management**: Provider or Riverpod (choose based on preference)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Prerequisites
 
-A few resources to get you started if this is your first Flutter project:
+Before you begin, ensure you have the following installed on your machine:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Flutter SDK
+- Node.js and npm
+- MongoDB
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone <repository-url>
+   cd nutri_track
+

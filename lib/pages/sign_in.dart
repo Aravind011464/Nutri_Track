@@ -54,7 +54,7 @@ class _SignInState extends State<SignIn> {
         var myToken = jsonResponse['token'];
         print(myToken);
         prefs.setString('token', myToken);
-        Navigator.push(context as BuildContext,MaterialPageRoute(builder: (context) => DashBoard(token: myToken)));
+        Navigator.push(context as BuildContext,MaterialPageRoute(builder: (context) => DashBoard()));
       }
       else{
         print('Something went wrong!');

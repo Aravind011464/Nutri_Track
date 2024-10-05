@@ -4,6 +4,12 @@ import 'package:nutri_track/pages/dashboard.dart';
 import 'package:nutri_track/pages/sign_in.dart';
 import 'package:nutri_track/pages/sign_up.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:nutri_track/pages/bmi_page.dart';
+import 'package:nutri_track/pages/z_score_page.dart';
+import 'package:nutri_track/pages/update_page.dart';
+import 'package:nutri_track/pages/diet_chart_page.dart';
+import 'package:nutri_track/pages/advice_page.dart';
+import 'package:nutri_track/pages/needs_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,9 +35,16 @@ class MyApp extends StatelessWidget {
       routes: {
         '/signup' : (context)=> SignUp(),
         '/signin' : (context)=>SignIn(),
-        '/dashboard' : (context)=>DashBoard()
+        '/dashboard' : (context)=>DashBoard(),
+        '/bmi': (context) => BMIPage(),                       // Route for BMI Page
+        '/zscore': (context) => ZScorePage(),                 // Route for Z-Score Page
+        '/update': (context) => UpdatePage(),                 // Route for Update Page
+        '/dietchart': (context) => DietChartPage(),           // Route for Diet Chart Page
+        '/advice': (context) => AdvicePage(),                 // Route for Advice Page
+        '/needs': (context) => NeedsPage(),
       },
-      home: (token != null && JwtDecoder.isExpired(token) == false) ? DashBoard(token: token) : SignIn(),
+      // home: (token != null && JwtDecoder.isExpired(token) == false) ? DashBoard(token: token) : SignIn(),
+      home:DashBoard(),
     );
   }
 }
