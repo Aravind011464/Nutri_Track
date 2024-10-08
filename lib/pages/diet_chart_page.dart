@@ -71,61 +71,63 @@ class _DietChartPageState extends State<DietChartPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Welcome to the Diet Chart Generator',
-                style: Theme.of(context).textTheme.displayLarge,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Enter your daily calorie intake',
-                style: Theme.of(context).textTheme.bodyMedium,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: calorieController,
-                decoration: const InputDecoration(
-                  labelText: 'Daily Calorie Intake',
-                  border: OutlineInputBorder(),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Welcome to the Diet Chart Generator',
+                  style: Theme.of(context).textTheme.displayLarge,
+                  textAlign: TextAlign.center,
                 ),
-                keyboardType: TextInputType.number,
-              ),
-              const SizedBox(height: 20),
-              DropdownButton<String>(
-                value: selectedDiet,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedDiet = newValue!;
-                  });
-                },
-                items: <String>['Vegetarian', 'Non-Vegetarian', 'Vegan']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: generateDietChart,
-                child: const Text('Generate Diet Chart'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                  textStyle: const TextStyle(fontSize: 18),
+                const SizedBox(height: 20),
+                Text(
+                  'Enter your daily calorie intake',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
                 ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                dietChart,
-                style: Theme.of(context).textTheme.bodyMedium,
-                textAlign: TextAlign.center,
-              ),
-            ],
+                const SizedBox(height: 20),
+                TextField(
+                  controller: calorieController,
+                  decoration: const InputDecoration(
+                    labelText: 'Daily Calorie Intake',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 20),
+                DropdownButton<String>(
+                  value: selectedDiet,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedDiet = newValue!;
+                    });
+                  },
+                  items: <String>['Vegetarian', 'Non-Vegetarian', 'Vegan']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: generateDietChart,
+                  child: const Text('Generate Diet Chart'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    textStyle: const TextStyle(fontSize: 18),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  dietChart,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         ),
       ),
