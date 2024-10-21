@@ -54,7 +54,7 @@ class _SignInState extends State<SignIn> {
         var myToken = jsonResponse['token'];
         print(myToken);
         prefs.setString('token', myToken);
-        Navigator.push(context as BuildContext,MaterialPageRoute(builder: (context) => DashBoard()));
+        Navigator.push(context as BuildContext,MaterialPageRoute(builder: (context) => DashBoard(token: myToken)));
       }
       else{
         print('Something went wrong!');
@@ -147,9 +147,11 @@ class _SignInState extends State<SignIn> {
                 child: TextField(
                   controller: t2,
                   decoration: InputDecoration(
+
                     labelText: 'Password',
                     border: OutlineInputBorder(),
                   ),
+                  obscureText: true,
                 ),
               ),
               SizedBox(

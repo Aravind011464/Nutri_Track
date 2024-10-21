@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-final url = "http://192.168.1.9:3000/";
+final url = "http://192.168.21.204:3000/";
 final signup_url = url + "registration";
 final signin_url = url + "login";
+final child_entry_url = url + "childEntry";
 
 Color def_color = Color(0xFFD8BCFC);
 const MidnightBlue=Color.fromRGBO(12, 97, 112,1);

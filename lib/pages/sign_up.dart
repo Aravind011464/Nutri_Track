@@ -47,7 +47,7 @@ class SignUp extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         height: 300,
                         padding:EdgeInsets.fromLTRB(75,130,0,0),
-                        child:Text("Scann up !!",
+                        child:Text("Sign Up",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 40,
@@ -126,6 +126,7 @@ class SignUp extends StatelessWidget {
                   labelText: 'Password',
                   border: OutlineInputBorder(),
                 ),
+                obscureText: true,
               ),
             ),
             SizedBox(
@@ -148,9 +149,11 @@ class SignUp extends StatelessWidget {
                     ),
                     onPressed: () async{
                       if(t2.text.isNotEmpty && t4.text.isNotEmpty){
-                        print("Hello");
+                        print("Hello1");
                         var reqBody = {
+                          "name" : t1.text,
                           "email" : t2.text,
+                          "phone" : t3.text,
                           "password" : t4.text
                         };
                         var response = await http.post(Uri.parse(signup_url),
@@ -159,7 +162,7 @@ class SignUp extends StatelessWidget {
                         },
                         body: jsonEncode(reqBody)
                         );
-                        print(response.body);
+                        Navigator.pushNamed(context, '/childEntry');
                       }
                     },
                   ),

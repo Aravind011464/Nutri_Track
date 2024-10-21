@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:nutri_track/pages/child_info.dart';
 import 'package:nutri_track/pages/dashboard.dart';
 import 'package:nutri_track/pages/sign_in.dart';
 import 'package:nutri_track/pages/sign_up.dart';
@@ -44,11 +45,11 @@ class MyApp extends StatelessWidget {
         '/dietchart': (context) => DietChartPage(),
         '/advice': (context) => AdvicePage(),
         '/needs': (context) => NeedsPage(),
+        '/childEntry' : (context)=>childInfo(),
       },
-      // home: validatedToken != null
-      //     ? DashBoard(token: validatedToken)  // Safely pass the token
-      //     : SignIn(),
-      home : DashBoard(),
+      home: (token != null && JwtDecoder.isExpired(token) == false) ? DashBoard(token: token) : SignIn(),
+      //home: DashBoard(),
+      //home : childInfo(),
     );
   }
 }
