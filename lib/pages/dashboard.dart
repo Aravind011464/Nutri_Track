@@ -26,7 +26,7 @@ class _DashBoardState extends State<DashBoard> {
     if (widget.token != null) {
       // Decode token and extract data
       // Example: Map<String, dynamic> decodedToken = JwtDecoder.decode(widget.token!);
-      userName = "Clarence";  // Replace this with actual extraction from token
+      userName = "SaiKrishnan";  // Replace this with actual extraction from token
     } else {
       userName = "Guest";  // Fallback if token is null
     }
@@ -163,6 +163,14 @@ class _DashBoardState extends State<DashBoard> {
                 Navigator.pop(context);
               },
             ),
+            ListTile(
+              leading: Icon(Icons.logout),  // Use 'leading' for the icon on the left
+              title: Text('Log out'),
+              onTap: () {
+                Navigator.pushNamed(context, '/signin');
+              },
+            ),
+
           ],
         ),
       ),

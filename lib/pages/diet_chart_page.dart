@@ -76,7 +76,7 @@ class _DietChartPageState extends State<DietChartPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Welcome to the Diet Chart Generator',
+                  'The Diet Chart Generator',
                   style: Theme.of(context).textTheme.displayLarge,
                   textAlign: TextAlign.center,
                 ),
