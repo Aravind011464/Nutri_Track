@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:nutri_track/pages/ActivityLevelPage.dart';
 import 'package:nutri_track/pages/child_info.dart';
 import 'package:nutri_track/pages/dashboard.dart';
 import 'package:nutri_track/pages/sign_in.dart';
@@ -42,14 +43,18 @@ class MyApp extends StatelessWidget {
         '/bmi': (context) => BMIPage(),
         '/zscore': (context) => ZScorePage(),
         '/update': (context) => UpdatePage(),
-        '/dietchart': (context) => DietChartPage(),
+        '/dietchart': (context) => DietChartPage(calories: 0,lifestyle: "Moderately Active",),
         '/advice': (context) => AdvicePage(),
         '/needs': (context) => NeedsPage(),
         '/childEntry' : (context)=>childInfo(),
+        '/activityLevel':(context)=>ActivityLevelPage(calories: 700),
       },
-      home: (token != null && JwtDecoder.isExpired(token) == false) ? DashBoard(token: token) : SignIn(),
+      //home: (token != null && JwtDecoder.isExpired(token) == false) ? DashBoard(token: token) : SignIn(),
       //home: DashBoard(),
       //home : childInfo(),
+      //home :  const DietChartPage(calories: 700, lifestyle: 'Moderately Active',),
+      home: ActivityLevelPage(calories: 995,)
     );
   }
 }
+

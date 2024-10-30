@@ -82,7 +82,7 @@ class _DashBoardState extends State<DashBoard> {
                   _buildTappableBox(context, 'BMI', BMIPage()),
                   _buildTappableBox(context, 'Z-Score', ZScorePage()),
                   _buildTappableBox(context, 'Update', UpdatePage()),
-                  _buildTappableBox(context, 'Suggest Diet Chart', DietChartPage()),
+                  _buildTappableBox(context, 'Suggest Diet Chart', DietChartPage(calories: 700, lifestyle: 'Moderately Active',)),
                   _buildTappableBox(context, 'Seek Advice', AdvicePage()),
                   _buildTappableBox(context, 'Needs', NeedsPage()),
                 ],
