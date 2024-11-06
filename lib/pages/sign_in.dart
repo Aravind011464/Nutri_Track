@@ -1,8 +1,8 @@
 import 'dart:convert';
 // import 'dart:js';
 
-import 'package:nutri_track/pages/dashboard.dart';
-import 'package:nutri_track/variables.dart';
+import 'package:nutri_track_ios/pages/dashboard.dart';
+import 'package:nutri_track_ios/variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:http/http.dart' as http;
@@ -49,15 +49,21 @@ class _SignInState extends State<SignIn> {
           },
           body: jsonEncode(reqBody)
       );
-      var jsonResponse = jsonDecode(response.body);
-      if(jsonResponse['status']){
-        var myToken = jsonResponse['token'];
-        print(myToken);
-        prefs.setString('token', myToken);
-        Navigator.push(context as BuildContext,MaterialPageRoute(builder: (context) => DashBoard(token: myToken)));
-      }
-      else{
-        print('Something went wrong!');
+      if (response.statusCode == 200) {
+        final responseBody = response.body.trim();
+        if(responseBody.isNotEmpty) {
+          print("Entering login!\n");
+          var jsonResponse = jsonDecode(responseBody);
+          if(jsonResponse['status']){
+            var myToken = jsonResponse['token'];
+            print("Token generated during login : " + myToken);
+            prefs.setString('token', myToken);
+            Navigator.push(context as BuildContext,MaterialPageRoute(builder: (context) => DashBoard(token: myToken)));
+          }
+          else{
+            print('Something went wrong!');
+          }
+        }
       }
     }
   }
