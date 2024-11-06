@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:nutri_track_ios/pages/child_info.dart';
-import 'package:nutri_track_ios/pages/dashboard.dart';
-import 'package:nutri_track_ios/pages/sign_in.dart';
-import 'package:nutri_track_ios/pages/sign_up.dart';
+import 'package:nutri_track/pages/child_info.dart';
+import 'package:nutri_track/pages/dashboard.dart';
+import 'package:nutri_track/pages/sign_in.dart';
+import 'package:nutri_track/pages/sign_up.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:nutri_track_ios/pages/bmi_page.dart';
-import 'package:nutri_track_ios/pages/z_score_page.dart';
-import 'package:nutri_track_ios/pages/update_page.dart';
-import 'package:nutri_track_ios/pages/diet_chart_page.dart';
-import 'package:nutri_track_ios/pages/advice_page.dart';
-import 'package:nutri_track_ios/pages/needs_page.dart';
+import 'package:nutri_track/pages/bmi_page.dart';
+import 'package:nutri_track/pages/z_score_page.dart';
+import 'package:nutri_track/pages/update_page.dart';
+import 'package:nutri_track/pages/diet_chart_page.dart';
+import 'package:nutri_track/pages/advice_page.dart';
+import 'package:nutri_track/pages/needs_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

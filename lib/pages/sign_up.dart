@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:nutri_track_ios/variables.dart';
+import 'package:nutri_track/variables.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Classes/Clipsign.dart';
 import 'package:flutter/material.dart';

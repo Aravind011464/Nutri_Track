@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import 'package:nutri_track_ios/pages/dashboard.dart';
+import 'package:nutri_track/pages/dashboard.dart';
 import '../classes/Clip.dart';
 import '../classes/InputText.dart';
 import '../variables.dart';

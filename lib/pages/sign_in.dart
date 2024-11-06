@@ -1,8 +1,8 @@
 import 'dart:convert';
 // import 'dart:js';
 
-import 'package:nutri_track_ios/pages/dashboard.dart';
-import 'package:nutri_track_ios/variables.dart';
+import 'package:nutri_track/pages/dashboard.dart';
+import 'package:nutri_track/variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:http/http.dart' as http;
