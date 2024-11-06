@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'bmi_page.dart';            // Import your BMI page
 import 'z_score_page.dart';      // Import your Z-Score page
 import 'update_page.dart';       // Import your Update page
@@ -17,23 +19,36 @@ class DashBoard extends StatefulWidget {
 
 class _DashBoardState extends State<DashBoard> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  late String userName;
+  String userName = "Guest";
+  late SharedPreferences prefs;
 
   @override
   void initState() {
     super.initState();
     // Check if token is null and extract userName or set default
-    if (widget.token != null) {
+  }
+
+  void check_token() async{
+    initSharedPref();
+    final token_data = await initSharedPref();
+    print("Token passed to dashboard : " + token_data!);
+    if (token_data!= null) {
       // Decode token and extract data
-      // Example: Map<String, dynamic> decodedToken = JwtDecoder.decode(widget.token!);
-      userName = "SaiKrishnan";  // Replace this with actual extraction from token
-    } else {
-      userName = "Guest";  // Fallback if token is null
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token_data);
+      print("Username is : " + decodedToken['name']);
+      userName = decodedToken['name'];  // Replace this with actual extraction from token
     }
+  }
+
+  Future<String?> initSharedPref() async{
+    prefs = await SharedPreferences.getInstance();
+    String? token_data = prefs.getString('token');
+    return token_data;
   }
 
   @override
   Widget build(BuildContext context) {
+    check_token();
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -82,7 +97,7 @@ class _DashBoardState extends State<DashBoard> {
                   _buildTappableBox(context, 'BMI', BMIPage()),
                   _buildTappableBox(context, 'Z-Score', ZScorePage()),
                   _buildTappableBox(context, 'Update', UpdatePage()),
-                  _buildTappableBox(context, 'Suggest Diet Chart', DietChartPage(calories: 700, lifestyle: 'Moderately Active',)),
+                  _buildTappableBox(context, 'Suggest Diet Chart', DietChartPage()),
                   _buildTappableBox(context, 'Seek Advice', AdvicePage()),
                   _buildTappableBox(context, 'Needs', NeedsPage()),
                 ],
@@ -166,11 +181,11 @@ class _DashBoardState extends State<DashBoard> {
             ListTile(
               leading: Icon(Icons.logout),  // Use 'leading' for the icon on the left
               title: Text('Log out'),
-              onTap: () {
-                Navigator.pushNamed(context, '/signin');
+              onTap: () async {
+                await prefs.remove('token');
+                Navigator.pushNamed(context,'/signin');
               },
             ),
-
           ],
         ),
       ),

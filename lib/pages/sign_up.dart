@@ -1,18 +1,41 @@
 import 'dart:convert';
 
 import 'package:nutri_track/variables.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Classes/Clipsign.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   SignUp({super.key});
-  //Box box=Hive.box("user");
+
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  late SharedPreferences prefs;
+
   final TextEditingController t1 = TextEditingController();
+
   final TextEditingController t2 = TextEditingController();
+
   final TextEditingController t3 = TextEditingController();
+
   final TextEditingController t4 = TextEditingController();
+
   final FocusNode _focusNode = FocusNode();
+
+  @override
+  void initState(){
+    // TODO : implement initState
+    super.initState();
+    initSharedPref();
+  }
+
+  void initSharedPref() async{
+    prefs = await SharedPreferences.getInstance();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,11 +180,26 @@ class SignUp extends StatelessWidget {
                           "password" : t4.text
                         };
                         var response = await http.post(Uri.parse(signup_url),
-                        headers: {
-                          "Content-type" : "application/json"
-                        },
-                        body: jsonEncode(reqBody)
+                          headers: {
+                            "Content-type" : "application/json"
+                          },
+                          body: jsonEncode(reqBody)
                         );
+                        if (response.statusCode == 200) {
+                          final responseBody = response.body.trim();
+                          if(responseBody.isNotEmpty) {
+                            print("Entering signup!\n");
+                            var jsonResponse = jsonDecode(responseBody);
+                            if(jsonResponse['status']){
+                              var myToken = jsonResponse['token'];
+                              print("Token generated during signup : " + myToken);
+                              prefs.setString('token', myToken);
+                            }
+                            else{
+                              print('Something went wrong!');
+                            }
+                          }
+                        }
                         Navigator.pushNamed(context, '/childEntry');
                       }
                     },
