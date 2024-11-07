@@ -93,7 +93,7 @@ class _ActivityLevelPageState extends State<ActivityLevelPage> {
                   icon: const Icon(Icons.arrow_forward, color: Colors.white), // White icon
                   label: const Text('Next', style: TextStyle(color: Colors.white)), // White text for button
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blue, // Button color to match theme
+                    backgroundColor: Colors.blue, // Button color to match theme
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Padding inside button
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30), // Rounded button

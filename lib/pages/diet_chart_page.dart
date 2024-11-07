@@ -48,7 +48,7 @@ class DietChartPage extends StatelessWidget {
               children: [
                 Text(
                   'You need approximately ${averageCalories.toStringAsFixed(2)} calories per day based on your lifestyle: $lifestyle',
-                  style: Theme.of(context).textTheme.headline6?.copyWith(color: Colors.white),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
