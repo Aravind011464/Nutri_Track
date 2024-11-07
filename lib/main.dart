@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
         '/bmi': (context) => BMIPage(),
         '/zscore': (context) => ZScorePage(),
         '/update': (context) => UpdatePage(),
-        '/dietchart': (context) => DietChartPage(),
+        '/dietchart': (context) => DietChartPage(calories: 1000, lifestyle: '',),
         '/advice': (context) => AdvicePage(),
         '/needs': (context) => NeedsPage(),
         '/childEntry' : (context)=>childInfo(),
