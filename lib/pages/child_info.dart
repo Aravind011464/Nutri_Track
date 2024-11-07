@@ -67,7 +67,7 @@ class _childInfoState extends State<childInfo> {
     if(nameController.text.isNotEmpty && heightController.text.isNotEmpty && heightController.text.isNotEmpty && bloodGrpController.text.isNotEmpty && weightController.text.isNotEmpty){
       var child_age = calculateAge(DOBController.text);
       List<String> condition_values = _getValues();
-      print("YEA");
+      print("Making child entry\n");
       var reqBody = {
         "name" : nameController.text,
         "dob" : DOBController.text,
@@ -84,8 +84,8 @@ class _childInfoState extends State<childInfo> {
           body: jsonEncode(reqBody)
       );
       Map<String,dynamic> data = jsonDecode(response.body);
+      print("Checking status of response : ");
       bool flag_res = data["status"];
-      print("yo");
       print(flag_res);
       return flag_res;
     }
