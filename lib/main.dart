@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:nutri_track/pages/ActivityLevelPage.dart';
 import 'package:nutri_track/pages/child_info.dart';
 import 'package:nutri_track/pages/dashboard.dart';
 import 'package:nutri_track/pages/sign_in.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         '/dashboard': (context) => DashBoard(token: validatedToken), // Pass nullable token
         '/bmi': (context) => BMIPage(),
         '/zscore': (context) => ZScorePage(),
-        '/update': (context) => UpdatePage(),
+        '/update': (context) => childInfoUpdate(),
         '/dietchart': (context) => DietChartPage(calories: 1000, lifestyle: '',),
         '/advice': (context) => AdvicePage(),
         '/needs': (context) => NeedsPage(),
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
       },
       home: (token != null && JwtDecoder.isExpired(token) == false) ? DashBoard(token: token) : SignIn(),
       //home: DashBoard(),
+      // home : ActivityLevelPage(calories: 1000)
       //home : childInfo(),
     );
   }

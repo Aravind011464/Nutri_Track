@@ -14,23 +14,19 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+
   late SharedPreferences prefs;
-
   final TextEditingController t1 = TextEditingController();
-
   final TextEditingController t2 = TextEditingController();
-
   final TextEditingController t3 = TextEditingController();
-
   final TextEditingController t4 = TextEditingController();
-
   final FocusNode _focusNode = FocusNode();
 
   @override
   void initState(){
     // TODO : implement initState
-    super.initState();
     initSharedPref();
+    super.initState();
   }
 
   void initSharedPref() async{
