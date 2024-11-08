@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:nutri_track/pages/dashboard.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../classes/Clip.dart';
 import '../classes/InputText.dart';
 import '../variables.dart';
@@ -25,12 +27,34 @@ class _childInfoState extends State<childInfo> {
   TextEditingController bloodGrpController = TextEditingController();
   TextEditingController DOBController = TextEditingController();
   List<TextEditingController> _controllers = [];
+  late SharedPreferences prefs;
+  String user_id = "";
 
   @override
   void initState() {
     super.initState();
     // Initialize the list with one controller
+    check_token();
     _addNewInputField();
+  }
+
+  void check_token() async {
+    final token_data = await initSharedPref();
+    print("Token passed to Child Entry : " + token_data!);
+    if (token_data != null) {
+      // Decode token and extract data
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token_data);
+      print("UserID is : " + decodedToken['user_id']);
+      setState(() {
+        user_id = decodedToken['user_id']; // Update userID with the extracted data!
+      });
+    }
+  }
+
+  Future<String?> initSharedPref() async {
+    prefs = await SharedPreferences.getInstance();
+    String? token_data = prefs.getString('token');
+    return token_data;
   }
 
   // Function to add a new TextEditingController
@@ -68,7 +92,21 @@ class _childInfoState extends State<childInfo> {
       var child_age = calculateAge(DOBController.text);
       List<String> condition_values = _getValues();
       print("Making child entry\n");
+      Map<String, dynamic> childData = {
+        "data" : {
+          'name': nameController.text,
+          'age': double.parse(heightController.text),
+          "dob" : DOBController.text,
+          'height' : double.parse(heightController.text),
+          'weight' : double.parse(weightController.text),
+          "conditions" : condition_values,
+          "blood" : bloodGrpController.text,
+        }
+      };
+      String childString = jsonEncode(childData);
+      prefs.setString("childDatas", childString);
       var reqBody = {
+        "userid" : user_id,
         "name" : nameController.text,
         "dob" : DOBController.text,
         "age" : child_age,
@@ -83,11 +121,17 @@ class _childInfoState extends State<childInfo> {
           },
           body: jsonEncode(reqBody)
       );
-      Map<String,dynamic> data = jsonDecode(response.body);
-      print("Checking status of response : ");
-      bool flag_res = data["status"];
-      print(flag_res);
-      return flag_res;
+      if(response.statusCode == 200){
+        final responseBody = response.body.trim();
+        if(responseBody.isNotEmpty){
+          Map<String,dynamic> data = jsonDecode(responseBody);
+          print("Checking status of response : ");
+          bool flag_res = data["status"];
+          print(flag_res);
+          return flag_res;
+        }
+      }
+      return false;
     }
   }
 

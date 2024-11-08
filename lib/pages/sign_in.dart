@@ -1,6 +1,7 @@
 import 'dart:convert';
 // import 'dart:js';
 
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:nutri_track/pages/dashboard.dart';
 import 'package:nutri_track/variables.dart';
 import 'package:flutter/material.dart';
@@ -19,11 +20,8 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final TextEditingController t1 = TextEditingController();
-
   final TextEditingController t2 = TextEditingController();
-
   final FocusNode _focusNode = FocusNode();
-
   late SharedPreferences prefs;
 
   @override
@@ -58,6 +56,32 @@ class _SignInState extends State<SignIn> {
             var myToken = jsonResponse['token'];
             print("Token generated during login : " + myToken);
             prefs.setString('token', myToken);
+            Map<String, dynamic> decodedToken = JwtDecoder.decode(myToken);
+            var reqBody2 = {
+              "userid" : decodedToken["user_id"],
+            };
+            var response2 = await http.post(Uri.parse(child_retrieve_url),
+                headers: {
+                  "Content-type" : "application/json"
+                },
+                body: jsonEncode(reqBody2)
+            );
+            print("UserID during login : " + decodedToken["user_id"]);
+            if(response2.statusCode == 200){
+              final responseBody2 = response2.body.trim();
+              if(responseBody2.isNotEmpty){
+                var jsonResponse2 = jsonDecode(responseBody2);
+                print(jsonResponse2);
+                if(jsonResponse2["status"]){
+                  var child_data = jsonResponse2["data"];
+                  print(jsonResponse2["success"]);
+                  String child_datas = jsonEncode(jsonResponse2);
+                  print("Fetching child info to prefs");
+                  print(child_data);
+                  prefs.setString('childDatas', child_datas);
+                }
+              }
+            }
             Navigator.push(context as BuildContext,MaterialPageRoute(builder: (context) => DashBoard(token: myToken)));
           }
           else{
@@ -153,7 +177,6 @@ class _SignInState extends State<SignIn> {
                 child: TextField(
                   controller: t2,
                   decoration: InputDecoration(
-
                     labelText: 'Password',
                     border: OutlineInputBorder(),
                   ),
@@ -200,7 +223,6 @@ class _SignInState extends State<SignIn> {
                       Navigator.pushNamed(context, '/signup');
                     },
                     child: Container(
-
                       child: Text(
                         "Sign Up",
                         style: TextStyle(

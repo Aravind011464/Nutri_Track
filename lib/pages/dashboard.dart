@@ -1,5 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:nutri_track/pages/BMI_Gauge.dart';
+import 'package:nutri_track/pages/child_info.dart';
+import 'package:nutri_track/pages/z_score_height.dart';
+import 'package:nutri_track/variables.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'bmi_page.dart';            // Import your BMI page
 import 'z_score_page.dart';      // Import your Z-Score page
@@ -24,23 +30,37 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   void initState() {
+    check_token();
     super.initState();
-    // Check if token is null and extract userName or set default
   }
 
-  void check_token() async{
-    initSharedPref();
+  void check_token() async {
+    await initSharedPref();
     final token_data = await initSharedPref();
+    String? child_data = prefs.getString('childDatas');
     print("Token passed to dashboard : " + token_data!);
-    if (token_data!= null) {
+    if (child_data != null) {
+      Map<String, dynamic> childInfo_full =  jsonDecode(child_data); // Convert JSON string back to map
+      Map<String, dynamic> childInfo = childInfo_full["data"];
+      print(childInfo['weight']);
+      setState(() {
+        child_name = childInfo["name"];
+        child_weight = childInfo['weight']/1;
+        child_height = childInfo["height"]/1;
+      });
+    }
+    if (token_data != null) {
       // Decode token and extract data
       Map<String, dynamic> decodedToken = JwtDecoder.decode(token_data);
       print("Username is : " + decodedToken['name']);
-      userName = decodedToken['name'];  // Replace this with actual extraction from token
+      setState(() {
+        user_name = decodedToken['name'];
+        userName = decodedToken['name']; // Update userName with the extracted data
+      });
     }
   }
 
-  Future<String?> initSharedPref() async{
+  Future<String?> initSharedPref() async {
     prefs = await SharedPreferences.getInstance();
     String? token_data = prefs.getString('token');
     return token_data;
@@ -48,7 +68,8 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   Widget build(BuildContext context) {
-    check_token();
+    print("Child's name :" + child_name);
+    print("child's weight : $child_weight");
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -68,15 +89,20 @@ class _DashBoardState extends State<DashBoard> {
           )
         ],
       ),
-      body: Padding(
+      body: SingleChildScrollView( // Wrap the body with SingleChildScrollView
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Balance Display
             Text(
-              'Child Chart',
+              "${child_name}'s Chart",
               style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            Container(
+              height: 270,
+              child: BMIGauge(height: child_height/100, weight: child_weight/1), // BMI Gauge widget
             ),
             SizedBox(height: 20),
             Text(
@@ -86,22 +112,20 @@ class _DashBoardState extends State<DashBoard> {
             SizedBox(height: 20),
 
             // Action Buttons (Routing to different pages)
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                shrinkWrap: true,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 2,
-                children: [
-                  _buildTappableBox(context, 'BMI', BMIPage()),
-                  _buildTappableBox(context, 'Z-Score', ZScorePage()),
-                  _buildTappableBox(context, 'Update', UpdatePage()),
-                  _buildTappableBox(context, 'Suggest Diet Chart', DietChartPage(calories: 1000, lifestyle: '',)),
-                  _buildTappableBox(context, 'Seek Advice', AdvicePage()),
-                  _buildTappableBox(context, 'Needs', NeedsPage()),
-                ],
-              ),
+            GridView.count(
+              crossAxisCount: 2,
+              shrinkWrap: true,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 2,
+              children: [
+                _buildTappableBox(context, 'BMI', BMIPage()),
+                _buildTappableBox(context, 'Z-Score', ZScorePage()),
+                _buildTappableBox(context, 'Update', childInfoUpdate()),
+                _buildTappableBox(context, 'Suggest Diet Chart', DietChartPage(calories: 1000, lifestyle: '',)),
+                _buildTappableBox(context, 'Seek Advice', AdvicePage()),
+                _buildTappableBox(context, 'Needs', NeedsPage()),
+              ],
             ),
           ],
         ),
@@ -183,6 +207,7 @@ class _DashBoardState extends State<DashBoard> {
               title: Text('Log out'),
               onTap: () async {
                 await prefs.remove('token');
+                await prefs.remove('childDatas');
                 Navigator.pushNamed(context,'/signin');
               },
             ),
